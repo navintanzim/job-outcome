@@ -22,15 +22,31 @@ class ApplicationReportController extends Controller
 
         return view('application-reports.index', compact('applications'));
     }
-    public function create(JobPosting $jobPosting): View
-    {
+
+    public function create(
+        Request $request,
+        JobPosting $jobPosting
+    ): View|RedirectResponse {
+        $existingApplication = $jobPosting->applicationReports()
+            ->where('user_id', $request->user()->id)
+            ->first();
+
+        if ($existingApplication) {
+            return redirect()
+                ->route('application-reports.show', $existingApplication);
+        }
+
         return view('application-reports.create', compact('jobPosting'));
     }
 
     public function store(Request $request, JobPosting $jobPosting): RedirectResponse {
         $validated = $request->validate([
             'applied_at' => ['nullable', 'date'],
-            'status' => ['required', 'string', 'max:50'],
+            'status' => [
+                'required',
+                'string',
+                'in:' . implode(',', ApplicationReport::STATUSES),
+            ],
             'notes' => ['nullable', 'string'],
         ]);
 
@@ -69,7 +85,11 @@ class ApplicationReportController extends Controller
         );
 
         $validated = $request->validate([
-            'status' => ['required', 'string', 'max:50'],
+            'status' => [
+                'required',
+                'string',
+                'in:' . implode(',', ApplicationReport::STATUSES),
+            ],
             'notes' => ['nullable', 'string'],
         ]);
 

@@ -20,6 +20,17 @@ class ApplicationReport extends Model
         'notes',
     ];
 
+    public const STATUSES = [
+        'applied',
+        'recruiter_contacted',
+        'interview',
+        'offer',
+        'hired',
+        'rejected',
+        'withdrawn',
+        'no_response',
+    ];
+
     protected $casts = [
         'applied_at' => 'date',
         'status_changed_at' => 'datetime',

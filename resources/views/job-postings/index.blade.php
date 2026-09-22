@@ -83,6 +83,22 @@
                                         </span>
 
                                     </div>
+
+                                    <div class="mt-4">
+                                        @if ($jobPosting->application_reports_exists)
+                                        <span class="inline-block px-4 py-2 bg-gray-100 text-gray-600 rounded">
+                                            Application Tracked
+                                        </span>
+                                        @else
+                                            <a
+                                                href="{{ route('application-reports.create', $jobPosting) }}"
+                                                class="inline-block px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700"
+                                            >
+                                                Track My Application
+                                            </a>
+                                        @endif
+                                    </div>
+
                                 </div>
                             @endforeach
                         </div>

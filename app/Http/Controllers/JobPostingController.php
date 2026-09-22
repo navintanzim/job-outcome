@@ -42,9 +42,14 @@ class JobPostingController extends Controller
             ->with('success', 'Job posting created successfully.');
     }
 
-    public function index(): View
+    public function index(Request $request): View
     {
         $jobPostings = JobPosting::with('company')
+            ->withExists([
+                'applicationReports' => function ($query) use ($request) {
+                    $query->where('user_id', $request->user()->id);
+                },
+            ])
             ->latest()
             ->paginate(20);
 

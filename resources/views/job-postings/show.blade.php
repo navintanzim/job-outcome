@@ -77,7 +77,7 @@
                             href="{{ route('application-reports.create', $jobPosting) }}"
                             class="inline-block px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700"
                         >
-                            Report Your Application
+                            Track My Application
                         </a>
 
                          <a

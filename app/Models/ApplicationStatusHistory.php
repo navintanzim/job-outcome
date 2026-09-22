@@ -15,7 +15,7 @@ class ApplicationStatusHistory extends Model
         'status',
         'occurred_at',
     ];
-
+    protected $table = 'application_status_history';
     protected $casts = [
         'occurred_at' => 'datetime',
     ];

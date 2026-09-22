@@ -47,10 +47,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
         [ApplicationReportController::class, 'create']
     )->name('application-reports.create');
 
-    Route::post(
-        '/job-postings/{jobPosting}/application-report',
-        [ApplicationReportController::class, 'store']
-    )->name('application-reports.store');
+    Route::post('/job-postings/{jobPosting}/application-report',[ApplicationReportController::class, 'store'])
+    ->name('application-reports.store');
+
+    Route::get('/my-applications', [ApplicationReportController::class, 'index'])
+    ->name('application-reports.index');
+
+    Route::patch('/my-applications/{applicationReport}', [ApplicationReportController::class, 'update'])
+    ->name('application-reports.update');
+
+    Route::get(
+        '/my-applications/{applicationReport}/edit',
+        [ApplicationReportController::class, 'edit']
+    )->name('application-reports.edit');
+
+    Route::get(
+        '/my-applications/{applicationReport}',
+        [ApplicationReportController::class, 'show']
+    )->name('application-reports.show');
 });
 
 require __DIR__.'/auth.php';

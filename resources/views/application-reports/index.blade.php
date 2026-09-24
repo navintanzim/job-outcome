@@ -1,15 +1,15 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-display text-xl font-bold leading-tight text-[var(--ink)]">
             My Applications
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-10 sm:py-14">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
+            <div class="ui-panel">
+                <div class="p-6 sm:p-8">
 
                     @if (session('success'))
                     <div class="mb-6 p-4 bg-green-100 text-green-800 rounded">
@@ -17,25 +17,26 @@
                     </div>
                     @endif
 
-                    <div class="mb-6">
-                        <h1 class="text-2xl font-bold">
+                    <div class="mb-8">
+                        <p class="text-xs font-bold uppercase tracking-[0.18em] text-[var(--teal)]">Your activity</p>
+                        <h1 class="mt-1 text-3xl font-bold tracking-tight text-[var(--ink)]">
                             My Applications
                         </h1>
 
-                        <p class="text-gray-600 mt-1">
+                        <p class="mt-2 text-sm text-[var(--muted)]">
                             Track the jobs you have applied to and their current outcomes.
                         </p>
                     </div>
 
                     @if ($applications->isEmpty())
-                    <div class="py-8 text-center">
-                        <p class="text-gray-500 mb-4">
+                    <div class="rounded-2xl border border-dashed border-[var(--line)] bg-slate-50 py-12 text-center">
+                        <p class="mb-4 text-[var(--muted)]">
                             You haven't tracked any applications yet.
                         </p>
 
                         <a
                             href="{{ route('job-postings.index') }}"
-                            class="inline-block px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700">
+                            class="ui-button">
                             Browse Job Postings
                         </a>
                     </div>
@@ -43,7 +44,7 @@
                     <div class="space-y-4">
 
                         @foreach ($applications as $application)
-                        <div class="border rounded-lg p-5">
+                        <div class="rounded-2xl border border-[var(--line)] bg-white p-5 transition duration-200 hover:border-teal-200 hover:shadow-md sm:p-6">
 
                             <div class="flex items-start justify-between gap-4">
 
@@ -51,16 +52,16 @@
                                     <h3 class="text-lg font-semibold">
                                         <a
                                             href="{{ route('job-postings.show', $application->jobPosting) }}"
-                                            class="text-blue-600 hover:underline">
+                                            class="font-bold text-[var(--teal)] hover:text-[var(--coral)] hover:underline">
                                             {{ $application->jobPosting->title }}
                                         </a>
                                     </h3>
 
-                                    <p class="text-gray-700 mt-1">
+                                    <p class="mt-1 font-medium text-[var(--ink)]">
                                         {{ $application->jobPosting->company->name }}
                                     </p>
 
-                                    <div class="mt-3 text-sm text-gray-600 space-y-1">
+                                    <div class="mt-4 space-y-1 text-sm text-[var(--muted)]">
 
                                         @if ($application->applied_at)
                                         <p>
@@ -79,7 +80,7 @@
                                     </div>
                                 </div>
 
-                                <span class="px-3 py-1 text-sm rounded bg-gray-100 whitespace-nowrap">
+                                <span class="ui-badge whitespace-nowrap bg-teal-100 text-teal-800">
                                     {{ ucwords(str_replace('_', ' ', $application->status)) }}
                                 </span>
 
@@ -89,19 +90,19 @@
 
                                 <a
                                     href="{{ route('application-reports.show', $application) }}"
-                                    class="inline-block px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 text-sm font-medium">
+                                    class="ui-button text-sm">
                                     View Application
                                 </a>
 
                                 <a
                                     href="{{ route('job-postings.show', $application->jobPosting) }}"
-                                    class="inline-block px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 text-sm font-medium">
+                                    class="ui-button-secondary text-sm">
                                     View Job Posting
                                 </a>
 
                                 <a
                                     href="{{ route('application-reports.edit', $application) }}"
-                                    class="inline-block px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 text-sm font-medium">
+                                    class="ui-button-secondary border-orange-200 text-sm text-[var(--coral-dark)] hover:bg-orange-50">
                                     Update Status
                                 </a>
 

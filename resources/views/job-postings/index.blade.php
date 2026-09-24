@@ -1,30 +1,31 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-display text-xl font-bold leading-tight text-[var(--ink)]">
             Job Postings
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-10 sm:py-14">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
+            <div class="ui-panel">
+                <div class="p-6 sm:p-8">
 
                     <div class="flex items-center justify-between mb-6">
                         <div>
-                            <h1 class="text-2xl font-bold">
+                            <p class="text-xs font-bold uppercase tracking-[0.18em] text-[var(--teal)]">Community board</p>
+                            <h1 class="mt-1 text-3xl font-bold tracking-tight text-[var(--ink)]">
                                 Job Postings
                             </h1>
 
-                            <p class="text-gray-600 mt-1">
+                            <p class="mt-2 text-sm text-[var(--muted)]">
                                 Browse job postings tracked by the JobOutcome community.
                             </p>
                         </div>
 
                         <a
                             href="{{ route('job-postings.create') }}"
-                            class="px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700">
+                            class="ui-button whitespace-nowrap">
                             Add Job Posting
                         </a>
                     </div>
@@ -32,25 +33,25 @@
                     <form
                         method="GET"
                         action="{{ route('job-postings.index') }}"
-                        class="mb-6">
-                        <div class="flex gap-3">
+                        class="mb-8">
+                        <div class="flex flex-col gap-3 sm:flex-row">
                             <input
                                 type="text"
                                 name="search"
                                 value="{{ $search ?? '' }}"
                                 placeholder="Search jobs, companies, or locations..."
-                                class="flex-1 rounded-md border-gray-300 shadow-sm">
+                                class="ui-input mt-0 flex-1">
 
                             <button
                                 type="submit"
-                                class="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700">
+                                class="ui-button">
                                 Search
                             </button>
 
                             @if (!empty($search))
                             <a
                                 href="{{ route('job-postings.index') }}"
-                                class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">
+                                class="ui-button-secondary">
                                 Clear
                             </a>
                             @endif
@@ -58,29 +59,29 @@
                     </form>
 
                     @if ($jobPostings->isEmpty())
-                    <div class="py-8 text-center text-gray-500">
+                    <div class="rounded-2xl border border-dashed border-[var(--line)] bg-slate-50 py-12 text-center text-[var(--muted)]">
                         No job postings have been added yet.
                     </div>
                     @else
                     <div class="space-y-4">
                         @foreach ($jobPostings as $jobPosting)
-                        <div class="border rounded-lg p-5">
+                        <div class="group rounded-2xl border border-[var(--line)] bg-white p-5 transition duration-200 hover:-translate-y-0.5 hover:border-orange-200 hover:shadow-md sm:p-6">
                             <div class="flex items-start justify-between gap-4">
 
                                 <div>
                                     <h3 class="text-lg font-semibold">
                                         <a
                                             href="{{ route('job-postings.show', $jobPosting) }}"
-                                            class="text-blue-600 hover:underline">
+                                            class="font-bold text-[var(--teal)] hover:text-[var(--coral)] hover:underline">
                                             {{ $jobPosting->title }}
                                         </a>
                                     </h3>
 
-                                    <p class="text-gray-700 mt-1">
+                                    <p class="mt-1 font-medium text-[var(--ink)]">
                                         {{ $jobPosting->company->name }}
                                     </p>
 
-                                    <div class="mt-3 text-sm text-gray-600 space-y-1">
+                                    <div class="mt-4 space-y-1 text-sm text-[var(--muted)]">
                                         @if ($jobPosting->location)
                                         <p>
                                             <strong>Location:</strong>
@@ -104,7 +105,7 @@
                                     </div>
                                 </div>
 
-                                <span class="px-3 py-1 text-sm rounded bg-gray-100">
+                                <span class="ui-badge bg-orange-100 text-orange-800">
                                     {{ ucfirst($jobPosting->status) }}
                                 </span>
 
@@ -112,13 +113,13 @@
 
                             <div class="mt-4">
                                 @if ($jobPosting->application_reports_exists)
-                                <span class="inline-block px-4 py-2 bg-gray-100 text-gray-600 rounded">
+                                    <span class="ui-badge bg-slate-100 text-slate-600">
                                     Application Tracked
                                 </span>
                                 @else
                                 <a
                                     href="{{ route('application-reports.create', $jobPosting) }}"
-                                    class="inline-block px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700">
+                                    class="ui-button">
                                     Track My Application
                                 </a>
                                 @endif

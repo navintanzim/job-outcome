@@ -95,6 +95,23 @@
                             and may not represent all applicants or outcomes for this job.
                         </p>
 
+                        <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-500">
+                                Tracked applications
+                            </p>
+
+                            <p class="text-3xl font-bold mt-1">
+                                {{ $totalApplications }}
+                            </p>
+
+                            <p class="text-sm text-gray-600 mt-2">
+                                Reported hire rate:
+                                <span class="font-semibold">
+                                    {{ number_format($progressionPercentages['hired'] ?? 0, 2) }}%
+                                </span>
+                            </p>
+                        </div>
+
                         @if ($statusCounts->isEmpty())
                         <p class="text-gray-500">
                             No application outcomes have been reported yet.
@@ -127,6 +144,48 @@
 
                             @endforeach
 
+                        </div>
+                        @endif
+                    </div>
+
+                    <div class="mt-8 border-t pt-6">
+                        <h2 class="text-xl font-semibold mb-2">
+                            Application Progression
+                        </h2>
+
+                        <p class="text-sm text-gray-500 mb-5">
+                            These figures show the percentage of tracked applications that have
+                            reached each stage at least once. They are based on community-reported
+                            data and are not individual probabilities.
+                        </p>
+
+                        @if ($historyCounts->isEmpty())
+                        <p class="text-gray-500">
+                            No progression data available yet.
+                        </p>
+                        @else
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                            @foreach ([
+                            'applied' => 'Applied',
+                            'recruiter_contacted' => 'Recruiter Contacted',
+                            'interview' => 'Interview',
+                            'offer' => 'Offer',
+                            'hired' => 'Hired',
+                            ] as $status => $label)
+                            <div class="border rounded-lg p-4">
+                                <p class="text-sm text-gray-500">
+                                    {{ $label }}
+                                </p>
+
+                                <p class="text-2xl font-bold mt-1">
+                                    {{ $historyCounts[$status] ?? 0 }}
+                                </p>
+
+                                <p class="text-sm text-gray-600 mt-1">
+                                    Reported rate: {{ number_format($progressionPercentages[$status] ?? 0, 2) }}%
+                                </p>
+                            </div>
+                            @endforeach
                         </div>
                         @endif
                     </div>

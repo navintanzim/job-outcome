@@ -56,16 +56,7 @@
                                 required
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
                             >
-                                @foreach ([
-                                    'applied',
-                                    'recruiter_contacted',
-                                    'interview',
-                                    'offer',
-                                    'hired',
-                                    'rejected',
-                                    'withdrawn',
-                                    'no_response'
-                                ] as $status)
+                                @foreach (\App\Models\ApplicationReport::STATUSES as $status)
                                     <option
                                         value="{{ $status }}"
                                         @selected(old('status', $applicationReport->status) === $status)

@@ -59,8 +59,8 @@ class ApplicationReportController extends Controller
 
             ApplicationStatusHistory::create([
                 'application_report_id' => $applicationReport->id,
-                'status' => $applicationReport->status,
-                'occurred_at' => $applicationReport->status_changed_at,
+                'status' => 'applied',
+                'occurred_at' => $applicationReport->created_at,
             ]);
         });
 
@@ -100,11 +100,17 @@ class ApplicationReportController extends Controller
                 'notes' => $validated['notes'] ?? null,
             ]);
 
-            ApplicationStatusHistory::create([
-                'application_report_id' => $applicationReport->id,
-                'status' => $validated['status'],
-                'occurred_at' => $applicationReport->status_changed_at,
-            ]);
+            $alreadyReached = $applicationReport->statusHistory()
+                ->where('status', $validated['status'])
+                ->exists();
+
+            if (! $alreadyReached) {
+                ApplicationStatusHistory::create([
+                    'application_report_id' => $applicationReport->id,
+                    'status' => $validated['status'],
+                    'occurred_at' => $applicationReport->status_changed_at,
+                ]);
+            }
         });
 
         return redirect()

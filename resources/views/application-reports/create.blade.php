@@ -65,31 +65,13 @@
                                 class="block w-full border-gray-300 rounded-md shadow-sm"
                                 required
                             >
-                                <option value="">Select a status</option>
-                                <option value="applied" @selected(old('status') === 'applied')>
-                                    Applied
-                                </option>
-                                <option value="recruiter_contacted" @selected(old('status') === 'recruiter_contacted')>
-                                    Recruiter Contacted
-                                </option>
-                                <option value="interview" @selected(old('status') === 'interview')>
-                                    Interview
-                                </option>
-                                <option value="offer" @selected(old('status') === 'offer')>
-                                    Offer
-                                </option>
-                                <option value="hired" @selected(old('status') === 'hired')>
-                                    Hired
-                                </option>
-                                <option value="rejected" @selected(old('status') === 'rejected')>
-                                    Rejected
-                                </option>
-                                <option value="withdrawn" @selected(old('status') === 'withdrawn')>
-                                    Withdrawn
-                                </option>
-                                <option value="no_response" @selected(old('status') === 'no_response')>
-                                    No Response
-                                </option>
+                                @foreach (\App\Models\ApplicationReport::STATUSES as $status)
+                                    <option
+                                        value="{{ $status }}"
+                                    >
+                                        {{ ucwords(str_replace('_', ' ', $status)) }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
 

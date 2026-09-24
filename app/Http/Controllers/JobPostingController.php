@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Models\ApplicationReport;
 use App\Models\JobPosting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -88,16 +89,42 @@ class JobPostingController extends Controller
             ->groupBy('status')
             ->pluck('count', 'status');
 
+        $historyCounts = DB::table('application_status_history')
+            ->join(
+                'application_reports',
+                'application_status_history.application_report_id',
+                '=',
+                'application_reports.id'
+            )
+            ->where('application_reports.job_posting_id', $jobPosting->id)
+            ->select(
+                'application_status_history.status',
+                DB::raw('COUNT(DISTINCT application_status_history.application_report_id) as count')
+            )
+            ->groupBy('application_status_history.status')
+            ->pluck('count', 'status');
+
         $applicationReport = $jobPosting->applicationReports()
             ->where('user_id', $request->user()->id)
             ->first();
 
+        $progressionPercentages = [];
         $totalApplications = $jobPosting->applicationReports()->count();
+        if ($totalApplications > 0) {
+            foreach (ApplicationReport::STATUSES as $status) {
+                $progressionPercentages[$status] = round(
+                    (($historyCounts[$status] ?? 0) / $totalApplications) * 100,
+                    2
+                );
+            }
+        }
 
         return view('job-postings.show', compact(
             'jobPosting',
             'statusCounts',
             'applicationReport',
+            'historyCounts',
+            'progressionPercentages',
             'totalApplications'
         ));
     }
